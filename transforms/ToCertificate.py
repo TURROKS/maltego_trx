@@ -30,8 +30,7 @@ class ToCertificate(DiscoverableTransform):
                 issuer = re.findall(r'CN=(.+)', key['issuer_name'])
                 ent.addProperty(fieldName='cert_subject', displayName='Certificate Subject', value=key['name_value'])
                 ent.addProperty(fieldName='cert_issuer', displayName='Certificate Issuer', value=issuer[0])
-                ent.addProperty(fieldName='cert_issuer_id', displayName='Certificate Issuer ID',
-                                value=key['issuer_ca_id'])
+                ent.addProperty(fieldName='cert_issuer_id', displayName='Certificate Issuer ID', value=key['issuer_ca_id'])
                 ent.addProperty(fieldName='cert_expiry', displayName='Certificate Expiry Date', value=key['not_after'])
 
         except ConnectionError:
