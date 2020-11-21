@@ -1,1 +1,2 @@
 requests
+maltego_trx

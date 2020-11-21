@@ -5,7 +5,7 @@ import re
 __author__ = 'Mario Rojas'
 __credits__ = []
 __license__ = 'MIT'
-__version__ = '1.0'
+__version__ = '1.0.1'
 __maintainer__ = 'Mario Rojas'
 __email__ = 'mario.rojas-chinchilla@outlook.com'
 __status__ = 'Development'
@@ -16,6 +16,7 @@ class ToCertificate(DiscoverableTransform):
     Lookup the ssl certificate associated with a domain.
     """
 
+# The Following Function handles the entity creation based on the data received from the request and get_certs
     @classmethod
     def create_entities(cls, request, response):
         domain = request.Value
@@ -36,6 +37,7 @@ class ToCertificate(DiscoverableTransform):
         except ConnectionError:
             response.addUIMessage("Connection Error")
 
+# The get_certs function is the that queries the crt.sh API and gets the required data for the transform
     @staticmethod
     def get_certs(search_domain):
 
@@ -45,6 +47,8 @@ class ToCertificate(DiscoverableTransform):
             return data
         else:
             return ConnectionError
+
+# Following section is required only for testing from terminal, will be ignored otherwise
 
 
 if __name__ == "__main__":
