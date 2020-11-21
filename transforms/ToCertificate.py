@@ -6,7 +6,7 @@ import datetime as dt
 __author__ = 'Mario Rojas'
 __credits__ = []
 __license__ = 'MIT'
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 __maintainer__ = 'Mario Rojas'
 __email__ = 'mario.rojas-chinchilla@outlook.com'
 __status__ = 'Development'
@@ -32,7 +32,10 @@ class ToCertificate(DiscoverableTransform):
 
                 ent = response.addEntity('maltego.SSLCertificate', key['id'])
                 ent.addProperty(fieldName='cert_subject', displayName='Certificate Subject', value=key['name_value'])
-                ent.addProperty(fieldName='cert_issuer', displayName='Certificate Issuer', value=issuer[0])
+                try:
+                    ent.addProperty(fieldName='cert_issuer', displayName='Certificate Issuer', value=issuer[0])
+                except IndexError:
+                    pass
                 ent.addProperty(fieldName='cert_issuer_id', displayName='Certificate Issuer ID', value=key['issuer_ca_id'])
                 ent.addProperty(fieldName='cert_expiry', displayName='Certificate Expiry Date', value=expiration)
                 ent.setWeight(10)
