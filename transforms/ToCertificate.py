@@ -1,11 +1,12 @@
 from maltego_trx.transform import DiscoverableTransform
 import requests
 import re
+import datetime as dt
 
 __author__ = 'Mario Rojas'
 __credits__ = []
 __license__ = 'MIT'
-__version__ = '1.0.1'
+__version__ = '1.1.0'
 __maintainer__ = 'Mario Rojas'
 __email__ = 'mario.rojas-chinchilla@outlook.com'
 __status__ = 'Development'
@@ -26,13 +27,19 @@ class ToCertificate(DiscoverableTransform):
 
             for key in data.json():
 
-                ent = response.addEntity('maltego.SSLCertificate', key['id'])
-                ent.setWeight(10)
                 issuer = re.findall(r'CN=(.+)', key['issuer_name'])
+                expiration = dt.datetime.strptime(key['not_after'], "%Y-%m-%dT%H:%M:%S")
+
+                ent = response.addEntity('maltego.SSLCertificate', key['id'])
                 ent.addProperty(fieldName='cert_subject', displayName='Certificate Subject', value=key['name_value'])
                 ent.addProperty(fieldName='cert_issuer', displayName='Certificate Issuer', value=issuer[0])
                 ent.addProperty(fieldName='cert_issuer_id', displayName='Certificate Issuer ID', value=key['issuer_ca_id'])
-                ent.addProperty(fieldName='cert_expiry', displayName='Certificate Expiry Date', value=key['not_after'])
+                ent.addProperty(fieldName='cert_expiry', displayName='Certificate Expiry Date', value=expiration)
+                ent.setWeight(10)
+                if expiration < dt.datetime.now():
+                    ent.setBookmark(bookmark=4)
+                else:
+                    pass
 
         except ConnectionError:
             response.addUIMessage("Connection Error")
