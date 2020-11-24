@@ -4,7 +4,7 @@ from maltego_trx.transform import DiscoverableTransform
 __author__ = 'Mario Rojas'
 __credits__ = []
 __license__ = 'MIT'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 __maintainer__ = 'Mario Rojas'
 __email__ = 'mario.rojas-chinchilla@outlook.com'
 __status__ = 'Development'
@@ -21,7 +21,11 @@ class ToIssuerName(DiscoverableTransform):
 
         try:
             name = request.getProperty(key='cert_issuer')
-            response.addEntity(Phrase, name)
+
+            if name:
+                response.addEntity(Phrase, name)
+            else:
+                pass
 
         except KeyError:
             response.addUIMessage("Invalid Key")
