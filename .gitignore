@@ -1,6 +1,7 @@
 venv/
 .idea
 .DS_Store
+transforms\__pycache__
 
 # User-specific stuff
 .idea/**/workspace.xml
